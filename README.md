@@ -52,7 +52,7 @@ module "claude_code" {
   # Security
 
   privileged = true
-  cap_drop   = ["NET_RAW", "SYS_PTRACE", "MKNOD"]
+  cap_drop   = ["CAP_NET_RAW", "CAP_SYS_PTRACE", "CAP_MKNOD"]
 
   # Networking
 
