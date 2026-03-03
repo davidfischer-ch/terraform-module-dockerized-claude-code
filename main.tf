@@ -23,6 +23,9 @@ resource "docker_container" "app" {
     }
   }
 
+  entrypoint = ["sleep", "infinity"]
+  command    = []
+
   env = formatlist("%s=%s", keys(local.env), values(local.env))
 
   hostname = var.identifier
