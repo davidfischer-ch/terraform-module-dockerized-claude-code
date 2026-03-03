@@ -11,11 +11,13 @@ Manage Claude Code (Anthropic's AI coding assistant).
 
 ## Usage
 
+See [examples/default](examples/default) for a complete working configuration.
+
 ### Minimal
 
 ```hcl
 module "claude_code" {
-  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.0.0"
+  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=main"
 
   identifier     = "claude-code"
   enabled        = true
@@ -31,7 +33,7 @@ module "claude_code" {
 
 ```hcl
 module "claude_code" {
-  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.0.0"
+  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=main"
 
   identifier     = "claude-code"
   enabled        = true

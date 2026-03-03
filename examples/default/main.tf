@@ -1,0 +1,30 @@
+resource "docker_image" "claude_code" {
+  name         = "ghcr.io/anthropics/claude-code:latest"
+  keep_locally = true
+}
+
+resource "docker_network" "claude_code" {
+  name   = "claude-code"
+  driver = "bridge"
+}
+
+module "claude_code" {
+  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=main"
+
+  identifier     = "claude-code"
+  enabled        = true
+  image_id       = docker_image.claude_code.image_id
+  data_directory = "/data/claude-code"
+
+  api_key = var.anthropic_api_key
+  model   = "claude-sonnet-4-6"
+
+  # Security
+
+  privileged = true
+  cap_drop   = ["CAP_NET_RAW", "CAP_SYS_PTRACE", "CAP_MKNOD"]
+
+  # Networking
+
+  network_id = docker_network.claude_code.id
+}
