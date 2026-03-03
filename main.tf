@@ -13,6 +13,16 @@ resource "docker_container" "app" {
   start    = var.enabled
   restart  = "always"
 
+  privileged = var.privileged
+
+  dynamic "capabilities" {
+    for_each = length(var.cap_add) + length(var.cap_drop) > 0 ? [1] : []
+    content {
+      add  = var.cap_add
+      drop = var.cap_drop
+    }
+  }
+
   env = formatlist("%s=%s", keys(local.env), values(local.env))
 
   hostname = var.identifier

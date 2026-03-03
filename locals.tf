@@ -1,5 +1,5 @@
 locals {
-  container_config_directory  = "/home/user/.claude"
+  container_config_directory  = "/home/app/.claude"
   host_config_directory       = "${var.data_directory}/config"
 
   env = merge(var.env, {

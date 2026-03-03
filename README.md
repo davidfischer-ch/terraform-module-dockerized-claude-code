@@ -5,6 +5,7 @@ Manage Claude Code (Anthropic's AI coding assistant).
 * Runs in bridge networking mode
 * Persists config directory
 * Requires an Anthropic API key (sensitive variable)
+* Configurable privileged mode with capability control
 * Supports mounting a project directory as workspace
 * Supports extra volumes for additional read-only or read-write mounts
 
@@ -48,6 +49,11 @@ module "claude_code" {
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1"
   }
 
+  # Security
+
+  privileged = true
+  cap_drop   = ["NET_RAW", "SYS_PTRACE", "MKNOD"]
+
   # Networking
 
   hosts      = module.fisch3r_net.lan_hosts
@@ -84,7 +90,7 @@ data_directory/
 
 | Container Path | Host Path | Mode |
 |---|---|---|
-| `/home/user/.claude` | `{data_directory}/config` | read-write |
+| `/home/app/.claude` | `{data_directory}/config` | read-write |
 
 ## Variables
 
@@ -92,13 +98,16 @@ data_directory/
 |------|------|---------|-------------|
 | `identifier` | `string` | — | Unique name for resources (must match `^[a-z]+(-[a-z0-9]+)*$`). |
 | `enabled` | `bool` | — | Start or stop the container. |
-| `image_id` | `string` | — | [Claude Code](https://hub.docker.com/r/anthropic/claude-code/tags) Docker image's ID. |
+| `image_id` | `string` | — | Claude Code Docker image's ID. |
 | `data_directory` | `string` | — | Host path for persistent volumes. |
 | `data_owner` | `string` | `"1000:1000"` | UID:GID for data and logs directories. |
 | `api_key` | `string` | — | Anthropic API key (sensitive). |
 | `model` | `string` | `"claude-sonnet-4-6"` | Claude model to use. |
 | `max_turns` | `number` | `0` | Maximum agentic turns (0 for unlimited). |
 | `env` | `map(string)` | `{}` | Extra environment variables. |
+| `privileged` | `bool` | `false` | Run the container in privileged mode. |
+| `cap_add` | `set(string)` | `[]` | Linux capabilities to add to the container. |
+| `cap_drop` | `set(string)` | `[]` | Linux capabilities to drop from the container. |
 | `hosts` | `map(string)` | `{}` | Extra `/etc/hosts` entries for the container. |
 | `network_id` | `string` | — | Docker network to attach to. |
 | `extra_volumes` | `map(object)` | `{}` | Extra volumes to mount. |
@@ -118,5 +127,5 @@ data_directory/
 ## References
 
 * https://docs.anthropic.com/en/docs/claude-code
-* https://hub.docker.com/r/anthropic/claude-code
 * https://github.com/anthropics/claude-code
+* https://www.npmjs.com/package/@anthropic-ai/claude-code

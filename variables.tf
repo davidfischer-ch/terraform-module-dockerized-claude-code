@@ -63,6 +63,26 @@ variable "env" {
   description = "Extra environment variables to pass to the container."
 }
 
+# Security -----------------------------------------------------------------------------------------
+
+variable "privileged" {
+  type        = bool
+  default     = false
+  description = "Run the container in privileged mode."
+}
+
+variable "cap_add" {
+  type        = set(string)
+  default     = []
+  description = "Linux capabilities to add to the container."
+}
+
+variable "cap_drop" {
+  type        = set(string)
+  default     = []
+  description = "Linux capabilities to drop from the container."
+}
+
 # Networking ---------------------------------------------------------------------------------------
 
 variable "hosts" {
