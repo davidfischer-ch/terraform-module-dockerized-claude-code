@@ -73,7 +73,6 @@ resource "docker_container" "app" {
 resource "local_file" "settings" {
   filename = "${local.host_config_directory}/settings.json"
   content = jsonencode({
-    model        = var.model
     apiKeyHelper = "printenv ANTHROPIC_API_KEY"
   })
 }

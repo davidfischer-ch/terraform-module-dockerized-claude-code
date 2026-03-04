@@ -4,6 +4,6 @@ locals {
 
   env = merge(var.env, {
     ANTHROPIC_API_KEY = var.api_key
-    CLAUDE_MODEL      = var.model
+    ANTHROPIC_MODEL   = var.model
   })
 }
