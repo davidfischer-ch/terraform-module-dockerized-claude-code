@@ -27,4 +27,21 @@ module "claude_code" {
   # Networking
 
   network_id = docker_network.claude_code.id
+
+  # Storage
+
+  config_directory = "/home/david/.claude"
+
+  extra_volumes = {
+    my_project = {
+      container_path = "/home/app/my-project"
+      host_path      = "/home/david/projects/my-project"
+      read_only      = false
+    }
+    documentation = {
+      container_path = "/home/app/docs"
+      host_path      = "/data/shared/documentation"
+      read_only      = true
+    }
+  }
 }
