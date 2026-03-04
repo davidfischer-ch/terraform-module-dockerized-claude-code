@@ -95,14 +95,16 @@ All persistent data lives under `data_directory`:
 
 ```
 data_directory/
-├── config/  # Claude settings (~/.claude)
-├── data/    # Working data
-└── logs/    # Application logs
+├── config/          # Claude settings (~/.claude)
+│   └── .claude.json # Symlinked from ~/.claude.json in the image
+├── data/            # Working data
+└── logs/            # Application logs
 ```
 
 | Container Path | Host Path | Mode |
 |---|---|---|
 | `/home/app/.claude` | `{data_directory}/config` | read-write |
+| `/home/app/.claude.json` | Symlink → `.claude/.claude.json` | (via config volume) |
 
 ## Variables
 
