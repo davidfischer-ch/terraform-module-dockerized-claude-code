@@ -79,6 +79,10 @@ module "claude_code" {
 }
 ```
 
+## Authentication
+
+The API key is passed directly as the `ANTHROPIC_API_KEY` environment variable, which Claude Code reads natively. No `apiKeyHelper` indirection is needed.
+
 ## File ownership
 
 A Docker image defines an internal user (e.g. `app` with UID 1001) that may not match the actual UID/GID of the host user who owns the mounted volumes. When these differ, the container either cannot write to the volumes or creates files with the wrong ownership on the host.
@@ -130,7 +134,6 @@ data_directory/
 
 * Terraform >= 1.6
 * [kreuzwerker/docker](https://github.com/kreuzwerker/terraform-provider-docker) >= 3.0.2
-* [hashicorp/local](https://github.com/hashicorp/terraform-provider-local) >= 2.4.1
 
 ## References
 

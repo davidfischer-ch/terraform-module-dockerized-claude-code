@@ -1,11 +1,5 @@
 resource "docker_container" "app" {
 
-  lifecycle {
-    replace_triggered_by = [
-      local_file.settings
-    ]
-  }
-
   image = var.image_id
   name  = var.identifier
 
@@ -68,11 +62,4 @@ resource "docker_container" "app" {
       chown "${var.data_owner}" "${local.host_config_directory}"
     EOT
   }
-}
-
-resource "local_file" "settings" {
-  filename = "${local.host_config_directory}/settings.json"
-  content = jsonencode({
-    apiKeyHelper = "printenv ANTHROPIC_API_KEY"
-  })
 }
