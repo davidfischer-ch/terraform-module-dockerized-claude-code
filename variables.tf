@@ -32,8 +32,9 @@ variable "data_owner" {
 
 variable "api_key" {
   type        = string
+  default     = ""
   sensitive   = true
-  description = "Anthropic API key for Claude."
+  description = "Anthropic API key for Claude. Leave empty to use OAuth login instead."
 }
 
 variable "model" {
@@ -51,11 +52,6 @@ variable "model" {
   }
 }
 
-variable "max_turns" {
-  type        = number
-  default     = 0
-  description = "Maximum number of agentic turns (0 for unlimited)."
-}
 
 variable "env" {
   type        = map(string)

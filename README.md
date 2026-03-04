@@ -4,7 +4,6 @@ Manage Claude Code (Anthropic's AI coding assistant).
 
 * Runs in bridge networking mode
 * Persists config directory
-* Requires an Anthropic API key (sensitive variable)
 * Configurable privileged mode with capability control
 * Supports extra volumes for additional read-only or read-write mounts
 
@@ -44,7 +43,6 @@ module "claude_code" {
 
   api_key    = var.anthropic_api_key
   model      = "claude-opus-4-6"
-  max_turns  = 10
 
   env = {
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1"
@@ -81,7 +79,14 @@ module "claude_code" {
 
 ## Authentication
 
-The API key is passed directly as the `ANTHROPIC_API_KEY` environment variable, which Claude Code reads natively. No `apiKeyHelper` indirection is needed.
+Claude Code supports two separate authentication methods with **different billing systems**:
+
+* **API key** (`api_key` variable) — Uses prepaid credits purchased at [console.anthropic.com](https://console.anthropic.com/settings/billing). The module passes this as the `ANTHROPIC_API_KEY` environment variable.
+* **OAuth login** (`claude /login`) — Uses your Claude Pro/Max subscription from [claude.ai](https://claude.ai). Run `claude /login` interactively inside the container.
+
+These are not interchangeable: a Claude Pro/Max subscription does not provide API credits, and API credits do not grant a subscription. Choose one method, not both.
+
+If you prefer OAuth, omit `api_key` (or leave it empty) and authenticate via `claude /login` inside the container.
 
 ## File ownership
 
@@ -105,9 +110,8 @@ This module sets the container's `user` to the `data_owner` variable and wraps t
 | `image_id` | `string` | — | Claude Code Docker image's ID. |
 | `data_directory` | `string` | — | Host path for persistent volumes. |
 | `data_owner` | `string` | `"1000:1000"` | UID:GID for data directories. |
-| `api_key` | `string` | — | Anthropic API key (sensitive). |
+| `api_key` | `string` | `""` | Anthropic API key (sensitive). |
 | `model` | `string` | `"claude-sonnet-4-6"` | Claude model to use. |
-| `max_turns` | `number` | `0` | Maximum agentic turns (0 for unlimited). |
 | `env` | `map(string)` | `{}` | Extra environment variables. |
 | `privileged` | `bool` | `false` | Run the container in privileged mode. |
 | `cap_add` | `set(string)` | `[]` | Linux capabilities to add to the container. |
