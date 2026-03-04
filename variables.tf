@@ -52,6 +52,11 @@ variable "model" {
   }
 }
 
+variable "auto_update" {
+  type        = bool
+  default     = false
+  description = "Enable Claude Code auto-updates (disabled by default for CI reproducibility)."
+}
 
 variable "env" {
   type        = map(string)
