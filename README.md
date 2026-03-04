@@ -6,7 +6,6 @@ Manage Claude Code (Anthropic's AI coding assistant).
 * Persists config directory
 * Requires an Anthropic API key (sensitive variable)
 * Configurable privileged mode with capability control
-* Supports mounting a project directory as workspace
 * Supports extra volumes for additional read-only or read-write mounts
 
 ## Usage
@@ -29,7 +28,7 @@ module "claude_code" {
 }
 ```
 
-### With project workspace and extra volumes
+### With extra volumes
 
 ```hcl
 module "claude_code" {
@@ -63,12 +62,13 @@ module "claude_code" {
 
   # Storage
 
+  config_directory = "/home/david/.claude"
 
   extra_volumes = {
-    reference_docs = {
-      container_path = "/data/docs"
-      host_path      = "/data/shared/documentation"
-      read_only      = true
+    my_project = {
+      container_path = "/home/app/my-project"
+      host_path      = "/home/david/projects/my-project"
+      read_only      = false
     }
     shared_cache = {
       container_path = "/data/cache"
@@ -91,19 +91,9 @@ This module sets the container's `user` to the `data_owner` variable and wraps t
 
 ## Data layout
 
-All persistent data lives under `data_directory`:
-
-```
-data_directory/
-├── config/          # Claude settings (~/.claude)
-│   └── .claude.json # Symlinked from ~/.claude.json in the image
-├── data/            # Working data
-└── logs/            # Application logs
-```
-
 | Container Path | Host Path | Mode |
 |---|---|---|
-| `/home/app/.claude` | `{data_directory}/config` | read-write |
+| `/home/app/.claude` | `{config_directory}` or `{data_directory}/config` | read-write |
 | `/home/app/.claude.json` | Symlink → `.claude/.claude.json` | (via config volume) |
 
 ## Variables
@@ -114,7 +104,7 @@ data_directory/
 | `enabled` | `bool` | — | Start or stop the container. |
 | `image_id` | `string` | — | Claude Code Docker image's ID. |
 | `data_directory` | `string` | — | Host path for persistent volumes. |
-| `data_owner` | `string` | `"1000:1000"` | UID:GID for data and logs directories. |
+| `data_owner` | `string` | `"1000:1000"` | UID:GID for data directories. |
 | `api_key` | `string` | — | Anthropic API key (sensitive). |
 | `model` | `string` | `"claude-sonnet-4-6"` | Claude model to use. |
 | `max_turns` | `number` | `0` | Maximum agentic turns (0 for unlimited). |
@@ -124,6 +114,7 @@ data_directory/
 | `cap_drop` | `set(string)` | `[]` | Linux capabilities to drop from the container. |
 | `hosts` | `map(string)` | `{}` | Extra `/etc/hosts` entries for the container. |
 | `network_id` | `string` | — | Docker network to attach to. |
+| `config_directory` | `string` | `""` | Host path to mount as `~/.claude`. Defaults to `{data_directory}/config`. |
 | `extra_volumes` | `map(object)` | `{}` | Extra volumes to mount. |
 
 ## Outputs

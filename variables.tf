@@ -98,6 +98,12 @@ variable "network_id" {
 
 # Storage ------------------------------------------------------------------------------------------
 
+variable "config_directory" {
+  type        = string
+  default     = ""
+  description = "Host path to mount as ~/.claude. Defaults to {data_directory}/config when empty."
+}
+
 variable "extra_volumes" {
   type = map(object({
     container_path = string
@@ -107,4 +113,3 @@ variable "extra_volumes" {
   default     = {}
   description = "Extra volumes to mount in the container."
 }
-
