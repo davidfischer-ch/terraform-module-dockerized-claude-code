@@ -62,8 +62,8 @@ resource "docker_container" "app" {
 
   provisioner "local-exec" {
     command = <<EOT
-      mkdir -p "${local.host_config_directory}/debug"
-      chown -R "${var.data_owner}" "${local.host_config_directory}"
+      mkdir -p "${local.host_config_directory}"
+      chown "${var.data_owner}" "${local.host_config_directory}"
     EOT
   }
 }
