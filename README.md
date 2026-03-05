@@ -9,20 +9,37 @@ Manage Claude Code (Anthropic's AI coding assistant).
 
 ## Usage
 
-See [examples/default](examples/default) for a complete working configuration.
+See [examples/server](examples/server) and [examples/desktop](examples/desktop) for complete working configurations.
 
-### Minimal
+### [Server](examples/server) (API key, always restart)
 
 ```hcl
 module "claude_code" {
   source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=main"
 
-  identifier     = "claude-code"
-  enabled        = true
-  image_id       = docker_image.claude_code.image_id
-  data_directory = "/data/claude-code"
+  identifier       = "claude-code"
+  enabled          = true
+  image_id         = docker_image.claude_code.image_id
+  config_directory = "/data/claude-code/config"
+  restart          = "always"
 
   api_key    = var.anthropic_api_key
+  network_id = docker_network.claude_code.id
+}
+```
+
+### [Desktop](examples/desktop) (OAuth login, no auto-start on boot)
+
+```hcl
+module "claude_code" {
+  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=main"
+
+  identifier       = "claude-code"
+  enabled          = true
+  image_id         = docker_image.claude_code.image_id
+  config_directory = "/home/david/.claude"
+  restart          = "no"
+
   network_id = docker_network.claude_code.id
 }
 ```
@@ -33,16 +50,16 @@ module "claude_code" {
 module "claude_code" {
   source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=main"
 
-  identifier     = "claude-code"
-  enabled        = true
-  image_id       = docker_image.claude_code.image_id
-  data_directory = "/data/claude-code"
-  data_owner     = "1000:1000"
+  identifier       = "claude-code"
+  enabled          = true
+  image_id         = docker_image.claude_code.image_id
+  config_directory = "/data/claude-code/config"
+  data_owner       = "1000:1000"
 
   # Configuration
 
-  api_key    = var.anthropic_api_key
-  model      = "claude-opus-4-6"
+  api_key = var.anthropic_api_key
+  model   = "claude-opus-4-6"
 
   env = {
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1"
@@ -59,8 +76,6 @@ module "claude_code" {
   network_id = docker_network.claude_code.id
 
   # Storage
-
-  config_directory = "/home/david/.claude"
 
   extra_volumes = {
     my_project = {
@@ -98,7 +113,7 @@ This module sets the container's `user` to the `data_owner` variable and wraps t
 
 | Container Path | Host Path | Mode |
 |---|---|---|
-| `/home/app/.claude` | `{config_directory}` or `{data_directory}/config` | read-write |
+| `/home/app/.claude` | `{config_directory}` | read-write |
 | `/home/app/.claude.json` | Symlink → `.claude/.claude.json` | (via config volume) |
 
 ## Variables
@@ -107,18 +122,19 @@ This module sets the container's `user` to the `data_owner` variable and wraps t
 |------|------|---------|-------------|
 | `identifier` | `string` | — | Unique name for resources (must match `^[a-z]+(-[a-z0-9]+)*$`). |
 | `enabled` | `bool` | — | Start or stop the container. |
+| `restart` | `string` | `"always"` | Restart policy: `no`, `always`, `on-failure`, `unless-stopped`. |
 | `image_id` | `string` | — | Claude Code Docker image's ID. |
-| `data_directory` | `string` | — | Host path for persistent volumes. |
+| `config_directory` | `string` | — | Host path to mount as `~/.claude`. |
 | `data_owner` | `string` | `"1000:1000"` | UID:GID for data directories. |
-| `api_key` | `string` | `""` | Anthropic API key (sensitive). |
+| `api_key` | `string` | `""` | Anthropic API key (sensitive). Leave empty to use OAuth login. |
 | `model` | `string` | `"claude-sonnet-4-6"` | Claude model to use. |
+| `auto_update` | `bool` | `false` | Enable Claude Code auto-updates. |
 | `env` | `map(string)` | `{}` | Extra environment variables. |
 | `privileged` | `bool` | `false` | Run the container in privileged mode. |
 | `cap_add` | `set(string)` | `[]` | Linux capabilities to add to the container. |
 | `cap_drop` | `set(string)` | `[]` | Linux capabilities to drop from the container. |
 | `hosts` | `map(string)` | `{}` | Extra `/etc/hosts` entries for the container. |
 | `network_id` | `string` | — | Docker network to attach to. |
-| `config_directory` | `string` | `""` | Host path to mount as `~/.claude`. Defaults to `{data_directory}/config`. |
 | `extra_volumes` | `map(object)` | `{}` | Extra volumes to mount. |
 
 ## Outputs

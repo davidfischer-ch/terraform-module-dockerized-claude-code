@@ -1,5 +1,5 @@
 resource "docker_image" "claude_code" {
-  name         = "ghcr.io/anthropics/claude-code:latest"
+  name         = "your-registry.example.com/claude-code:latest"
   keep_locally = true
 }
 
@@ -11,10 +11,10 @@ resource "docker_network" "claude_code" {
 module "claude_code" {
   source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=main"
 
-  identifier     = "claude-code"
-  enabled        = true
-  image_id       = docker_image.claude_code.image_id
-  data_directory = "/data/claude-code"
+  identifier = "claude-code"
+  enabled    = true
+  image_id   = docker_image.claude_code.image_id
+  restart    = "always"
 
   api_key = var.anthropic_api_key
   model   = "claude-sonnet-4-6"
@@ -30,12 +30,12 @@ module "claude_code" {
 
   # Storage
 
-  config_directory = "/home/david/.claude"
+  config_directory = "/data/claude-code/config"
 
   extra_volumes = {
     my_project = {
       container_path = "/home/app/my-project"
-      host_path      = "/home/david/projects/my-project"
+      host_path      = "/data/projects/my-project"
       read_only      = false
     }
     documentation = {

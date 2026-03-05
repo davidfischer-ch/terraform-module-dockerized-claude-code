@@ -12,20 +12,20 @@ variable "enabled" {
   description = "Toggle the containers (started or stopped)."
 }
 
+variable "restart" {
+  type        = string
+  default     = "always"
+  description = "Container restart policy. Use 'no' to prevent automatic restart on system boot."
+
+  validation {
+    condition     = contains(["no", "always", "on-failure", "unless-stopped"], var.restart)
+    error_message = "Argument `restart` must be one of: no, always, on-failure, unless-stopped."
+  }
+}
+
 variable "image_id" {
   type        = string
   description = "Claude Code image's ID."
-}
-
-variable "data_directory" {
-  type        = string
-  description = "Where data will be persisted (volumes will be mounted as sub-directories)."
-}
-
-variable "data_owner" {
-  type        = string
-  default     = "1000:1000"
-  description = "Owner (uid:gid) for the data directories."
 }
 
 # Configuration ------------------------------------------------------------------------------------
@@ -101,8 +101,13 @@ variable "network_id" {
 
 variable "config_directory" {
   type        = string
-  default     = ""
-  description = "Host path to mount as ~/.claude. Defaults to {data_directory}/config when empty."
+  description = "Host path to mount as ~/.claude."
+}
+
+variable "data_owner" {
+  type        = string
+  default     = "1000:1000"
+  description = "Owner (uid:gid) for the data directories."
 }
 
 variable "extra_volumes" {

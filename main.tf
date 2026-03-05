@@ -5,7 +5,7 @@ resource "docker_container" "app" {
 
   must_run = var.enabled
   start    = var.enabled
-  restart  = "always"
+  restart  = var.restart
 
   privileged = var.privileged
 
@@ -40,7 +40,6 @@ resource "docker_container" "app" {
 
   network_mode = "bridge"
 
-  # Config owner root:root
   volumes {
     container_path = local.container_config_directory
     host_path      = local.host_config_directory

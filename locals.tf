@@ -1,6 +1,6 @@
 locals {
   container_config_directory = "/home/app/.claude"
-  host_config_directory      = var.config_directory != "" ? var.config_directory : "${var.data_directory}/config"
+  host_config_directory      = var.config_directory
 
   env = merge(
     var.env,
