@@ -6,6 +6,7 @@ locals {
     var.env,
     {
       ANTHROPIC_MODEL     = var.model
+      COLORTERM           = "truecolor"
       DISABLE_AUTOUPDATER = var.auto_update ? "" : "1"
     },
     var.api_key != "" ? { ANTHROPIC_API_KEY = var.api_key } : {},
