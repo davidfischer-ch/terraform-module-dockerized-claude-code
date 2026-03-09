@@ -16,8 +16,14 @@ module "claude_code" {
   image_id   = docker_image.claude_code.image_id
   restart    = "always"
 
+  # Configuration
+
   api_key = var.anthropic_api_key
   model   = "claude-sonnet-4-6"
+
+  env = {
+    CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1"
+  }
 
   # Security
 
@@ -26,6 +32,7 @@ module "claude_code" {
 
   # Networking
 
+  ca_bundle  = sensitive(file("${path.module}/ISRG_Root_X1.pem"))
   network_id = docker_network.claude_code.id
 
   # Storage
