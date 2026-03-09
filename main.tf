@@ -1,3 +1,9 @@
+resource "local_file" "ca_bundle" {
+  count    = var.ca_bundle != "" ? 1 : 0
+  filename = "${local.host_config_directory}/ca-bundle.pem"
+  content  = var.ca_bundle
+}
+
 resource "docker_container" "app" {
 
   image = var.image_id
@@ -54,6 +60,8 @@ resource "docker_container" "app" {
       read_only      = volumes.value.read_only
     }
   }
+
+  depends_on = [local_file.ca_bundle]
 
   provisioner "local-exec" {
     command = <<EOT

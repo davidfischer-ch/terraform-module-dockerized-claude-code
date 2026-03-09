@@ -86,6 +86,15 @@ variable "cap_drop" {
 
 # Networking ---------------------------------------------------------------------------------------
 
+variable "ca_bundle" {
+  type        = string
+  default     = ""
+  description = <<-EOT
+    PEM content of the CA bundle to trust in the container (use file() to load).
+    Sets NODE_EXTRA_CA_CERTS, CURL_CA_BUNDLE and REQUESTS_CA_BUNDLE.
+  EOT
+}
+
 variable "hosts" {
   type        = map(string)
   default     = {}

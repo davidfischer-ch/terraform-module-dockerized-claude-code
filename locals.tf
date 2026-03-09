@@ -15,5 +15,10 @@ locals {
       DISABLE_AUTOUPDATER = var.auto_update ? "" : "1"
     },
     var.api_key != "" ? { ANTHROPIC_API_KEY = var.api_key } : {},
+    var.ca_bundle != "" ? {
+      CURL_CA_BUNDLE      = "${local.container_config_directory}/ca-bundle.pem"
+      NODE_EXTRA_CA_CERTS = "${local.container_config_directory}/ca-bundle.pem"
+      REQUESTS_CA_BUNDLE  = "${local.container_config_directory}/ca-bundle.pem"
+    } : {},
   )
 }
