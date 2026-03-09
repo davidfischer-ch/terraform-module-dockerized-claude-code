@@ -27,7 +27,7 @@ resource "docker_container" "app" {
   hostname = var.identifier
 
   dynamic "host" {
-    for_each = var.hosts
+    for_each = local.hosts
     content {
       host = host.key
       ip   = host.value
