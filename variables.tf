@@ -28,6 +28,38 @@ variable "image_id" {
   description = "Claude Code image's ID."
 }
 
+# Process ------------------------------------------------------------------------------------------
+
+variable "app_uid" {
+  type        = number
+  default     = 1000
+  description = "UID of the user running the container and owning the data directories."
+}
+
+variable "app_gid" {
+  type        = number
+  default     = 1000
+  description = "GID of the user running the container and owning the data directories."
+}
+
+variable "privileged" {
+  type        = bool
+  default     = false
+  description = "Run the container in privileged mode."
+}
+
+variable "cap_add" {
+  type        = set(string)
+  default     = []
+  description = "Linux capabilities to add to the container."
+}
+
+variable "cap_drop" {
+  type        = set(string)
+  default     = []
+  description = "Linux capabilities to drop from the container."
+}
+
 # Configuration ------------------------------------------------------------------------------------
 
 variable "api_key" {
@@ -64,26 +96,6 @@ variable "env" {
   description = "Extra environment variables to pass to the container."
 }
 
-# Security -----------------------------------------------------------------------------------------
-
-variable "privileged" {
-  type        = bool
-  default     = false
-  description = "Run the container in privileged mode."
-}
-
-variable "cap_add" {
-  type        = set(string)
-  default     = []
-  description = "Linux capabilities to add to the container."
-}
-
-variable "cap_drop" {
-  type        = set(string)
-  default     = []
-  description = "Linux capabilities to drop from the container."
-}
-
 # Networking ---------------------------------------------------------------------------------------
 
 variable "ca_bundle" {
@@ -111,12 +123,6 @@ variable "network_id" {
 variable "config_directory" {
   type        = string
   description = "Host path to mount as ~/.claude."
-}
-
-variable "data_owner" {
-  type        = string
-  default     = "1000:1000"
-  description = "Owner (uid:gid) for the data directories."
 }
 
 variable "extra_volumes" {

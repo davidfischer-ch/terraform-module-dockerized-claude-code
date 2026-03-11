@@ -89,7 +89,8 @@ module "claude_code" {
   enabled    = true
   image_id   = docker_image.claude_code.image_id
   restart    = "always"
-  data_owner = "1000:1000"
+  app_uid    = 1000
+  app_gid    = 1000
 
   # Configuration
 
@@ -145,7 +146,7 @@ If you prefer OAuth, omit `api_key` (or leave it empty) and authenticate via `cl
 
 A Docker image defines an internal user (e.g. `app` with UID 1001) that may not match the actual UID/GID of the host user who owns the mounted volumes. When these differ, the container either cannot write to the volumes or creates files with the wrong ownership on the host.
 
-This module sets the container's `user` to the `data_owner` variable and wraps the entrypoint with [fixuid](https://github.com/boxboat/fixuid). At startup, fixuid adjusts the in-container user's UID/GID to match `data_owner`, so files created inside the container have the correct ownership on the host. Your Docker image must include fixuid for this to work.
+This module sets the container's `user` to `app_uid:app_gid` and wraps the entrypoint with [fixuid](https://github.com/boxboat/fixuid). At startup, fixuid adjusts the in-container user's UID/GID to match `app_uid`/`app_gid`, so files created inside the container have the correct ownership on the host. Your Docker image must include fixuid for this to work.
 
 ## Data layout
 
@@ -162,15 +163,15 @@ This module sets the container's `user` to the `data_owner` variable and wraps t
 | `enabled` | `bool` | — | Start or stop the container. |
 | `restart` | `string` | `"always"` | Restart policy: `no`, `always`, `on-failure`, `unless-stopped`. |
 | `image_id` | `string` | — | Claude Code Docker image's ID. |
-| `config_directory` | `string` | — | Host path to mount as `~/.claude`. |
-| `data_owner` | `string` | `"1000:1000"` | UID:GID for data directories. |
+| `app_uid` | `number` | `1000` | UID of the user running the container and owning the data directories. |
+| `app_gid` | `number` | `1000` | GID of the user running the container and owning the data directories. |
+| `privileged` | `bool` | `false` | Run the container in privileged mode. |
+| `cap_add` | `set(string)` | `[]` | Linux capabilities to add to the container. |
+| `cap_drop` | `set(string)` | `[]` | Linux capabilities to drop from the container. |
 | `api_key` | `string` | `""` | Anthropic API key (sensitive). Leave empty to use OAuth login. |
 | `model` | `string` | `"claude-sonnet-4-6"` | Claude model to use. |
 | `auto_update` | `bool` | `false` | Enable Claude Code auto-updates. |
 | `env` | `map(string)` | `{}` | Extra environment variables. |
-| `privileged` | `bool` | `false` | Run the container in privileged mode. |
-| `cap_add` | `set(string)` | `[]` | Linux capabilities to add to the container. |
-| `cap_drop` | `set(string)` | `[]` | Linux capabilities to drop from the container. |
 | `ca_bundle` | `string` | `""` | PEM content of a CA bundle to trust (use `file(...)` to load). Sets `NODE_EXTRA_CA_CERTS`, `CURL_CA_BUNDLE`, and `REQUESTS_CA_BUNDLE`. |
 | `hosts` | `map(string)` | `{}` | Extra `/etc/hosts` entries for the container. |
 | `network_id` | `string` | — | Docker network to attach to. |
