@@ -23,7 +23,7 @@ resource "docker_container" "app" {
     }
   }
 
-  user = var.data_owner
+  user = "${var.app_uid}:${var.app_gid}"
 
   entrypoint = ["fixuid", "-q", "sleep", "infinity"]
   command    = []
@@ -66,7 +66,7 @@ resource "docker_container" "app" {
   provisioner "local-exec" {
     command = <<EOT
       mkdir -p "${local.host_config_directory}"
-      chown "${var.data_owner}" "${local.host_config_directory}"
+      chown "${var.app_uid}:${var.app_gid}" "${local.host_config_directory}"
     EOT
   }
 }
