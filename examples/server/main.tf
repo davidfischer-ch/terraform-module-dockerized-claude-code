@@ -12,7 +12,6 @@ module "claude_code" {
   source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=main"
 
   identifier = "claude-code"
-  enabled    = true
   image_id   = docker_image.claude_code.image_id
   restart    = "always"
 
