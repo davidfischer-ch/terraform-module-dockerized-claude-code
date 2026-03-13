@@ -15,16 +15,7 @@ module "claude_code" {
   image_id   = docker_image.claude_code.image_id
   restart    = "always"
 
-  # Configuration
-
-  api_key = var.anthropic_api_key
-  model   = "claude-sonnet-4-6"
-
-  env = {
-    CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1"
-  }
-
-  # Security
+  # Process
 
   privileged = true
   cap_drop   = ["NET_RAW", "SYS_PTRACE", "MKNOD"]
@@ -49,5 +40,14 @@ module "claude_code" {
       host_path      = "/data/shared/documentation"
       read_only      = true
     }
+  }
+
+  # Configuration
+
+  api_key = var.anthropic_api_key
+  model   = "claude-sonnet-4-6"
+
+  env = {
+    CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1"
   }
 }

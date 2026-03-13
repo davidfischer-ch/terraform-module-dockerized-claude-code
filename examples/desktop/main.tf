@@ -15,10 +15,7 @@ module "claude_code" {
   image_id   = docker_image.claude_code.image_id
   restart    = "no"
 
-  # Use OAuth login instead of an API key
-  model = "claude-sonnet-4-6"
-
-  # Security
+  # Process
 
   privileged = true
   cap_drop   = ["NET_RAW", "SYS_PTRACE", "MKNOD"]
@@ -38,4 +35,8 @@ module "claude_code" {
       read_only      = false
     }
   }
+
+  # Configuration — use OAuth login instead of an API key
+
+  model = "claude-sonnet-4-6"
 }

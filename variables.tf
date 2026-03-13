@@ -156,42 +156,6 @@ variable "cap_drop" {
   }
 }
 
-# Configuration ------------------------------------------------------------------------------------
-
-variable "api_key" {
-  type        = string
-  description = "Anthropic API key for Claude. Leave empty to use OAuth login instead."
-  default     = ""
-  sensitive   = true
-}
-
-variable "model" {
-  type        = string
-  description = "Claude model to use."
-  default     = "claude-sonnet-4-6"
-
-  validation {
-    condition = contains([
-      "claude-opus-4-6",
-      "claude-sonnet-4-6",
-      "claude-haiku-4-5-20251001"
-    ], var.model)
-    error_message = "Model should be one of `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`."
-  }
-}
-
-variable "auto_update" {
-  type        = bool
-  description = "Enable Claude Code auto-updates (disabled by default for CI reproducibility)."
-  default     = false
-}
-
-variable "env" {
-  type        = map(string)
-  description = "Extra environment variables to pass to the container."
-  default     = {}
-}
-
 # Networking ---------------------------------------------------------------------------------------
 
 variable "ca_bundle" {
@@ -230,5 +194,41 @@ variable "extra_volumes" {
     volume_name    = optional(string)
   }))
   description = "Extra volumes to mount in the container."
+  default     = {}
+}
+
+# Configuration ------------------------------------------------------------------------------------
+
+variable "api_key" {
+  type        = string
+  description = "Anthropic API key for Claude. Leave empty to use OAuth login instead."
+  default     = ""
+  sensitive   = true
+}
+
+variable "model" {
+  type        = string
+  description = "Claude model to use."
+  default     = "claude-sonnet-4-6"
+
+  validation {
+    condition = contains([
+      "claude-opus-4-6",
+      "claude-sonnet-4-6",
+      "claude-haiku-4-5-20251001"
+    ], var.model)
+    error_message = "Model should be one of `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`."
+  }
+}
+
+variable "auto_update" {
+  type        = bool
+  description = "Enable Claude Code auto-updates (disabled by default for CI reproducibility)."
+  default     = false
+}
+
+variable "env" {
+  type        = map(string)
+  description = "Extra environment variables to pass to the container."
   default     = {}
 }

@@ -163,14 +163,15 @@ This module sets the container's `user` to `app_uid:app_gid` and wraps the entry
 | `privileged` | `bool` | `false` | Run the container in privileged mode. |
 | `cap_add` | `set(string)` | `[]` | Linux capabilities to add to the container. |
 | `cap_drop` | `set(string)` | `[]` | Linux capabilities to drop from the container. |
+| `ca_bundle` | `string` | `""` | PEM content of a CA bundle to trust (use `file(...)` to load). Sets `NODE_EXTRA_CA_CERTS`, `CURL_CA_BUNDLE`, and `REQUESTS_CA_BUNDLE`. |
+| `hosts` | `map(string)` | `{}` | Extra `/etc/hosts` entries for the container. |
+| `network_id` | `string` | — | Docker network to attach to. |
+| `config_directory` | `string` | — | Host path to mount as `~/.claude`. |
+| `extra_volumes` | `map(object)` | `{}` | Extra volumes to mount. |
 | `api_key` | `string` | `""` | Anthropic API key (sensitive). Leave empty to use OAuth login. |
 | `model` | `string` | `"claude-sonnet-4-6"` | Claude model to use. |
 | `auto_update` | `bool` | `false` | Enable Claude Code auto-updates. |
 | `env` | `map(string)` | `{}` | Extra environment variables. |
-| `ca_bundle` | `string` | `""` | PEM content of a CA bundle to trust (use `file(...)` to load). Sets `NODE_EXTRA_CA_CERTS`, `CURL_CA_BUNDLE`, and `REQUESTS_CA_BUNDLE`. |
-| `hosts` | `map(string)` | `{}` | Extra `/etc/hosts` entries for the container. |
-| `network_id` | `string` | — | Docker network to attach to. |
-| `extra_volumes` | `map(object)` | `{}` | Extra volumes to mount. |
 
 ## Outputs
 
