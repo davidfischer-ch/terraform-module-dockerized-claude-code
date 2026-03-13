@@ -1,5 +1,12 @@
 # Changelog
 
+## Release v1.2.0 (2026-03-13)
+
+### Minor compatibility breaks
+
+* The `cap_add` and `cap_drop` capabilities names are prefixed with `CAP_` for the Docker provider
+* The `cap_add` and `cap_drop` variables are now validated against the exhaustive list of Linux capabilities
+
 ## Release v1.1.0 (2026-03-13)
 
 ### Minor compatibility breaks
