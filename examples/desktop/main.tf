@@ -9,7 +9,7 @@ resource "docker_network" "claude_code" {
 }
 
 module "claude_code" {
-  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.2.0"
+  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.2.1"
 
   identifier = "claude-code"
   image_id   = docker_image.claude_code.image_id
