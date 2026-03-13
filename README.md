@@ -160,7 +160,7 @@ This module sets the container's `user` to `app_uid:app_gid` and wraps the entry
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `identifier` | `string` | — | Unique name for resources (must match `^[a-z]+(-[a-z0-9]+)*$`). |
-| `enabled` | `bool` | — | Start or stop the container. |
+| `enabled` | `bool` | `true` | Start or stop the container. |
 | `restart` | `string` | `"always"` | Restart policy: `no`, `always`, `on-failure`, `unless-stopped`. |
 | `image_id` | `string` | — | Claude Code Docker image's ID. |
 | `app_uid` | `number` | `1000` | UID of the user running the container and owning the data directories. |

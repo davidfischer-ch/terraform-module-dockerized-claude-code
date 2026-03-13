@@ -9,6 +9,7 @@ variable "identifier" {
 
 variable "enabled" {
   type        = bool
+  default     = true
   description = "Toggle the containers (started or stopped)."
 }
 
