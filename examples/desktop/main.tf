@@ -9,7 +9,7 @@ resource "docker_network" "claude_code" {
 }
 
 module "claude_code" {
-  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=main"
+  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.2.0"
 
   identifier = "claude-code"
   image_id   = docker_image.claude_code.image_id
@@ -21,7 +21,7 @@ module "claude_code" {
   # Security
 
   privileged = true
-  cap_drop   = ["CAP_NET_RAW", "CAP_SYS_PTRACE", "CAP_MKNOD"]
+  cap_drop   = ["NET_RAW", "SYS_PTRACE", "MKNOD"]
 
   # Networking
 

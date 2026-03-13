@@ -54,12 +54,106 @@ variable "cap_add" {
   type        = set(string)
   description = "Linux capabilities to add to the container."
   default     = []
+  validation {
+    condition = alltrue([for cap in var.cap_add : contains([
+      "ALL",
+      "AUDIT_CONTROL",
+      "AUDIT_READ",
+      "AUDIT_WRITE",
+      "BLOCK_SUSPEND",
+      "BPF",
+      "CHECKPOINT_RESTORE",
+      "CHOWN",
+      "DAC_OVERRIDE",
+      "DAC_READ_SEARCH",
+      "FOWNER",
+      "FSETID",
+      "IPC_LOCK",
+      "IPC_OWNER",
+      "KILL",
+      "LEASE",
+      "LINUX_IMMUTABLE",
+      "MAC_ADMIN",
+      "MAC_OVERRIDE",
+      "MKNOD",
+      "NET_ADMIN",
+      "NET_BIND_SERVICE",
+      "NET_BROADCAST",
+      "NET_RAW",
+      "PERFMON",
+      "SETFCAP",
+      "SETGID",
+      "SETPCAP",
+      "SETUID",
+      "SYS_ADMIN",
+      "SYS_BOOT",
+      "SYS_CHROOT",
+      "SYS_MODULE",
+      "SYS_NICE",
+      "SYS_PACCT",
+      "SYS_PTRACE",
+      "SYS_RAWIO",
+      "SYS_RESOURCE",
+      "SYS_TIME",
+      "SYS_TTY_CONFIG",
+      "SYSLOG",
+      "WAKE_ALARM"
+    ], cap)])
+    error_message = "Each entry in `cap_add` must be a valid Linux capability name."
+  }
 }
 
 variable "cap_drop" {
   type        = set(string)
   description = "Linux capabilities to drop from the container."
   default     = []
+  validation {
+    condition = alltrue([for cap in var.cap_drop : contains([
+      "ALL",
+      "AUDIT_CONTROL",
+      "AUDIT_READ",
+      "AUDIT_WRITE",
+      "BLOCK_SUSPEND",
+      "BPF",
+      "CHECKPOINT_RESTORE",
+      "CHOWN",
+      "DAC_OVERRIDE",
+      "DAC_READ_SEARCH",
+      "FOWNER",
+      "FSETID",
+      "IPC_LOCK",
+      "IPC_OWNER",
+      "KILL",
+      "LEASE",
+      "LINUX_IMMUTABLE",
+      "MAC_ADMIN",
+      "MAC_OVERRIDE",
+      "MKNOD",
+      "NET_ADMIN",
+      "NET_BIND_SERVICE",
+      "NET_BROADCAST",
+      "NET_RAW",
+      "PERFMON",
+      "SETFCAP",
+      "SETGID",
+      "SETPCAP",
+      "SETUID",
+      "SYS_ADMIN",
+      "SYS_BOOT",
+      "SYS_CHROOT",
+      "SYS_MODULE",
+      "SYS_NICE",
+      "SYS_PACCT",
+      "SYS_PTRACE",
+      "SYS_RAWIO",
+      "SYS_RESOURCE",
+      "SYS_TIME",
+      "SYS_TTY_CONFIG",
+      "SYSLOG",
+      "WAKE_ALARM"
+    ], cap)])
+    error_message = "Each entry in `cap_drop` must be a valid Linux capability name."
+  }
 }
 
 # Configuration ------------------------------------------------------------------------------------
