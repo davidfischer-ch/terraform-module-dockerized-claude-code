@@ -15,7 +15,7 @@ See [examples/server](examples/server) and [examples/desktop](examples/desktop) 
 
 ```hcl
 module "claude_code" {
-  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=main"
+  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.1.0"
 
   identifier = "claude-code"
   image_id   = docker_image.claude_code.image_id
@@ -45,7 +45,7 @@ module "claude_code" {
 
 ```hcl
 module "claude_code" {
-  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=main"
+  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.1.0"
 
   identifier = "claude-code"
   image_id   = docker_image.claude_code.image_id
@@ -81,7 +81,7 @@ module "claude_code" {
 
 ```hcl
 module "claude_code" {
-  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=main"
+  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.1.0"
 
   identifier = "claude-code"
   image_id   = docker_image.claude_code.image_id
