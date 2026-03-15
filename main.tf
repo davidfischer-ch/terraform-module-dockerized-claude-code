@@ -30,7 +30,7 @@ resource "docker_container" "app" {
 
   env = formatlist("%s=%s", keys(local.env), values(local.env))
 
-  hostname = var.identifier
+  group_add = var.extra_groups
 
   dynamic "host" {
     for_each = local.hosts
@@ -40,11 +40,22 @@ resource "docker_container" "app" {
     }
   }
 
+  hostname = var.identifier
+
+  network_mode = "bridge"
+
   networks_advanced {
     name = var.network_id
   }
 
-  network_mode = "bridge"
+  dynamic "devices" {
+    for_each = var.extra_devices
+    content {
+      container_path = devices.value.container_path
+      host_path      = devices.value.host_path
+      permissions    = devices.value.permissions
+    }
+  }
 
   volumes {
     container_path = local.container_config_directory
