@@ -1,5 +1,12 @@
 # Changelog
 
+## Release v1.2.2 (2026-03-15)
+
+### Features
+
+* Add `extra_devices` variable to expose host devices (e.g. Bluetooth HCI, USB) to the container
+* Add `extra_groups` variable to add supplementary groups to the container user
+
 ## Release v1.2.1 (2026-03-14)
 
 ### Fix and enhancements
