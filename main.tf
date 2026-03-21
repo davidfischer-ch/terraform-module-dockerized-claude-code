@@ -72,12 +72,5 @@ resource "docker_container" "app" {
     }
   }
 
-  depends_on = [local_file.ca_bundle]
-
-  provisioner "local-exec" {
-    command = <<EOT
-      mkdir -p "${local.host_config_directory}"
-      chown "${var.app_uid}:${var.app_gid}" "${local.host_config_directory}"
-    EOT
-  }
+  depends_on = [local_file.ca_bundle, terraform_data.data_directories]
 }
