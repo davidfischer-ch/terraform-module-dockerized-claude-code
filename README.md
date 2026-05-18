@@ -7,6 +7,7 @@ Manage Claude Code (Anthropic's AI coding assistant).
 * Configurable privileged mode with capability control
 * Supports extra volumes for additional read-only or read-write mounts
 
+
 ## Usage
 
 See [examples/server](examples/server) and [examples/desktop](examples/desktop) for complete working configurations.
@@ -126,6 +127,7 @@ module "claude_code" {
 }
 ```
 
+
 ## Authentication
 
 Claude Code supports two separate authentication methods with **different billing systems**:
@@ -137,11 +139,13 @@ These are not interchangeable: a Claude Pro/Max subscription does not provide AP
 
 If you prefer OAuth, omit `api_key` (or leave it empty) and authenticate via `claude /login` inside the container.
 
+
 ## File ownership
 
 A Docker image defines an internal user (e.g. `app` with UID 1001) that may not match the actual UID/GID of the host user who owns the mounted volumes. When these differ, the container either cannot write to the volumes or creates files with the wrong ownership on the host.
 
 This module sets the container's `user` to `app_uid:app_gid` and wraps the entrypoint with [fixuid](https://github.com/boxboat/fixuid). At startup, fixuid adjusts the in-container user's UID/GID to match `app_uid`/`app_gid`, so files created inside the container have the correct ownership on the host. Your Docker image must include fixuid for this to work.
+
 
 ## Data layout
 
@@ -149,6 +153,7 @@ This module sets the container's `user` to `app_uid:app_gid` and wraps the entry
 |---|---|---|
 | `/home/app/.claude` | `{config_directory}` | read-write |
 | `/home/app/.claude.json` | Symlink → `.claude/.claude.json` | (via config volume) |
+
 
 ## Variables
 
@@ -173,16 +178,19 @@ This module sets the container's `user` to `app_uid:app_gid` and wraps the entry
 | `auto_update` | `bool` | `false` | Enable Claude Code auto-updates. |
 | `env` | `map(string)` | `{}` | Extra environment variables. |
 
+
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | `host` | Container hostname. |
 
+
 ## Requirements
 
 * Terraform >= 1.6
 * [kreuzwerker/docker](https://github.com/kreuzwerker/terraform-provider-docker) >= 3.0.2
+
 
 ## References
 
