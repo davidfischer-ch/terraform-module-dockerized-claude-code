@@ -140,16 +140,12 @@ variable "api_key" {
 
 variable "model" {
   type        = string
-  description = "Claude model to use."
-  default     = "claude-sonnet-4-6"
+  description = "Claude model to use. Empty string means use the Claude Code built-in default."
+  default     = ""
 
   validation {
-    condition = contains([
-      "claude-opus-4-6",
-      "claude-sonnet-4-6",
-      "claude-haiku-4-5-20251001"
-    ], var.model)
-    error_message = "Model should be one of `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`."
+    condition     = var.model == "" || can(regex("^claude-[a-z0-9._-]+$", var.model))
+    error_message = "Model must be empty or a valid Claude model ID (e.g. claude-sonnet-4-6)."
   }
 }
 

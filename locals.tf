@@ -10,10 +10,10 @@ locals {
   env = merge(
     var.env,
     {
-      ANTHROPIC_MODEL     = var.model
       COLORTERM           = "truecolor"
       DISABLE_AUTOUPDATER = var.auto_update ? "" : "1"
     },
+    var.model != "" ? { ANTHROPIC_MODEL = var.model } : {},
     var.api_key != "" ? { ANTHROPIC_API_KEY = var.api_key } : {},
     var.ca_bundle != "" ? {
       CURL_CA_BUNDLE      = "${local.container_config_directory}/ca-bundle.pem"
