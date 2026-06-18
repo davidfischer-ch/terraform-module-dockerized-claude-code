@@ -1,5 +1,16 @@
 # Changelog
 
+## Release v1.3.0 (2026-06-18)
+
+### Minor compatibility breaks
+
+* `model` default changed from `claude-sonnet-4-6` to `""` (Claude Code built-in default, currently the same model)
+* `ANTHROPIC_MODEL` is no longer set when `model` is empty, letting Claude Code pick its own default
+
+### Features
+
+* Replace hardcoded model allowlist with a regex validation — any valid `claude-*` ID is accepted
+
 ## Release v1.2.2 (2026-03-15)
 
 ### Features
