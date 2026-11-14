@@ -1,5 +1,13 @@
 # Changelog
 
+## Release v1.3.1 (2026-11-14)
+
+### Fix and enhancements
+
+Container:
+
+* Run a shell loop as PID 1 that reaps the processes the sessions orphan, which no session can stop
+
 ## Release v1.3.0 (2026-06-18)
 
 ### Minor compatibility breaks
