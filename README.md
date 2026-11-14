@@ -3,6 +3,8 @@
 Manage Claude Code (Anthropic's AI coding assistant).
 
 * Runs in bridge networking mode
+* Runs a shell loop as PID 1, which reaps the processes the sessions leave behind and which no
+  session can stop
 * Persists config directory
 * Configurable privileged mode with capability control
 * Supports extra volumes for additional read-only or read-write mounts

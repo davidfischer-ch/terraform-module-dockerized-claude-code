@@ -25,8 +25,12 @@ resource "docker_container" "app" {
 
   user = "${var.app_uid}:${var.app_gid}"
 
-  entrypoint = ["fixuid", "-q", "sleep", "infinity"]
-  command    = []
+  # PID 1 reaps the processes the sessions orphan, and ignores every signal a session sends it.
+  entrypoint = [
+    "fixuid", "-q",
+    "sh", "-c", "trap '' INT TERM; while :; do sleep 3600 & wait; done"
+  ]
+  command = []
 
   env = formatlist("%s=%s", keys(local.env), values(local.env))
 
