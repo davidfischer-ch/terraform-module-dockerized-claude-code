@@ -1,5 +1,37 @@
 # Changelog
 
+
+## Release v1.3.2 (2026-11-19)
+
+Diff: https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code/compare/1.3.1...1.3.2
+
+### Features
+
+CI:
+
+* Add CI: formatting, validation and the tests, in the GitHub workflow (with the newest providers and their minimums) and in the GitLab pipeline
+
+### Fix and enhancements
+
+Container:
+
+* Pass `ALL` in `cap_add` and `cap_drop` to Docker as its wildcard instead of `CAP_ALL`
+* Mount the `volume_name` and `from_container` entries of `extra_volumes` as declared, instead of an anonymous volume
+* Hand the config directory over again, recursively, when `app_uid` or `app_gid` changes, whatever its path holds
+    * The first apply after the upgrade runs `chown -R` over the config directory
+
+Requirements:
+
+* Require Terraform 1.17
+* Require the Docker provider 4.7.0
+
+Docs:
+
+* Drop the `CAP_` prefix from the README's `cap_drop` examples, which the validation rejects
+* Document `ALL` in `cap_add` and `cap_drop`
+* Point the README and the examples at this release
+
+
 ## Release v1.3.1 (2026-11-14)
 
 ### Fix and enhancements

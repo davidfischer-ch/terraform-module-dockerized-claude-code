@@ -19,7 +19,7 @@ working configurations.
 
 ```hcl
 module "claude_code" {
-  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.2.1"
+  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.3.2"
 
   identifier = "claude-code"
   image_id   = docker_image.claude_code.image_id
@@ -49,7 +49,7 @@ module "claude_code" {
 
 ```hcl
 module "claude_code" {
-  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.2.1"
+  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.3.2"
 
   identifier = "claude-code"
   image_id   = docker_image.claude_code.image_id
@@ -85,7 +85,7 @@ module "claude_code" {
 
 ```hcl
 module "claude_code" {
-  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.2.1"
+  source = "git::https://github.com/davidfischer-ch/terraform-module-dockerized-claude-code.git?ref=1.3.2"
 
   identifier = "claude-code"
   image_id   = docker_image.claude_code.image_id
