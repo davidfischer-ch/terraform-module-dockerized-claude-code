@@ -12,7 +12,8 @@ Manage Claude Code (Anthropic's AI coding assistant).
 
 ## Usage
 
-See [examples/server](examples/server) and [examples/desktop](examples/desktop) for complete working configurations.
+See [examples/server](examples/server) and [examples/desktop](examples/desktop) for complete
+working configurations.
 
 ### [Server](examples/server) (API key, always restart)
 
@@ -134,19 +135,29 @@ module "claude_code" {
 
 Claude Code supports two separate authentication methods with **different billing systems**:
 
-* **API key** (`api_key` variable) — Uses prepaid credits purchased at [console.anthropic.com](https://console.anthropic.com/settings/billing). The module passes this as the `ANTHROPIC_API_KEY` environment variable.
-* **OAuth login** (`claude /login`) — Uses your Claude Pro/Max subscription from [claude.ai](https://claude.ai). Run `claude /login` interactively inside the container.
+* **API key** (`api_key` variable): uses prepaid credits purchased at
+  [console.anthropic.com](https://console.anthropic.com/settings/billing). The module passes this
+  as the `ANTHROPIC_API_KEY` environment variable.
+* **OAuth login** (`claude /login`): uses your Claude Pro/Max subscription from
+  [claude.ai](https://claude.ai). Run `claude /login` interactively inside the container.
 
-These are not interchangeable: a Claude Pro/Max subscription does not provide API credits, and API credits do not grant a subscription. Choose one method, not both.
+These are not interchangeable: a Claude Pro/Max subscription does not provide API credits, and API
+credits do not grant a subscription. Choose one method, not both.
 
-If you prefer OAuth, omit `api_key` (or leave it empty) and authenticate via `claude /login` inside the container.
+If you prefer OAuth, omit `api_key` (or leave it empty) and authenticate via `claude /login` inside
+the container.
 
 
 ## File ownership
 
-A Docker image defines an internal user (e.g. `app` with UID 1001) that may not match the actual UID/GID of the host user who owns the mounted volumes. When these differ, the container either cannot write to the volumes or creates files with the wrong ownership on the host.
+A Docker image defines an internal user (e.g. `app` with UID 1001) that may not match the actual
+UID/GID of the host user who owns the mounted volumes. When these differ, the container either
+cannot write to the volumes or creates files with the wrong ownership on the host.
 
-This module sets the container's `user` to `app_uid:app_gid` and wraps the entrypoint with [fixuid](https://github.com/boxboat/fixuid). At startup, fixuid adjusts the in-container user's UID/GID to match `app_uid`/`app_gid`, so files created inside the container have the correct ownership on the host. Your Docker image must include fixuid for this to work.
+This module sets the container's `user` to `app_uid:app_gid` and wraps the entrypoint with
+[fixuid](https://github.com/boxboat/fixuid). At startup, fixuid adjusts the in-container user's
+UID/GID to match `app_uid`/`app_gid`, so files created inside the container have the correct
+ownership on the host. Your Docker image must include fixuid for this to work.
 
 
 ## Data layout
