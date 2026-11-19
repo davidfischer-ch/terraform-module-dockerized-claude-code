@@ -201,7 +201,7 @@ ownership on the host. Your Docker image must include fixuid for this to work.
 
 ## Requirements
 
-* Terraform >= 1.6
+* Terraform >= 1.17
 * [kreuzwerker/docker](https://github.com/kreuzwerker/terraform-provider-docker) >= 3.0.2
 
 
