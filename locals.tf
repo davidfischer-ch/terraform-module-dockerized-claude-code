@@ -22,6 +22,10 @@ locals {
     } : {},
   )
 
+  # Docker takes the wildcard as ALL and every other capability with its CAP_ prefix.
+  cap_add  = [for cap in var.cap_add : cap == "ALL" ? cap : "CAP_${cap}"]
+  cap_drop = [for cap in var.cap_drop : cap == "ALL" ? cap : "CAP_${cap}"]
+
   linux_capabilities = [
     "ALL",
     "AUDIT_CONTROL",

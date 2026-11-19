@@ -61,7 +61,7 @@ module "claude_code" {
   # Security
 
   privileged = true
-  cap_drop   = ["CAP_NET_RAW", "CAP_SYS_PTRACE", "CAP_MKNOD"]
+  cap_drop   = ["NET_RAW", "SYS_PTRACE", "MKNOD"]
 
   # Networking
 
@@ -103,7 +103,7 @@ module "claude_code" {
   # Security
 
   privileged = true
-  cap_drop   = ["CAP_NET_RAW", "CAP_SYS_PTRACE", "CAP_MKNOD"]
+  cap_drop   = ["NET_RAW", "SYS_PTRACE", "MKNOD"]
 
   # Networking
 
@@ -179,13 +179,13 @@ ownership on the host. Your Docker image must include fixuid for this to work.
 | `app_uid` | `number` | `1000` | UID of the user running the container and owning the data directories. |
 | `app_gid` | `number` | `1000` | GID of the user running the container and owning the data directories. |
 | `privileged` | `bool` | `false` | Run the container in privileged mode. |
-| `cap_add` | `set(string)` | `[]` | Linux capabilities to add to the container. |
-| `cap_drop` | `set(string)` | `[]` | Linux capabilities to drop from the container. |
+| `cap_add` | `set(string)` | `[]` | Linux capabilities to add to the container, `ALL` for every one. |
+| `cap_drop` | `set(string)` | `[]` | Linux capabilities to drop from the container, `ALL` for every one. |
 | `ca_bundle` | `string` | `""` | PEM content of a CA bundle to trust (use `file(...)` to load). Sets `NODE_EXTRA_CA_CERTS`, `CURL_CA_BUNDLE`, and `REQUESTS_CA_BUNDLE`. |
 | `hosts` | `map(string)` | `{}` | Extra `/etc/hosts` entries for the container. |
 | `network_id` | `string` | — | Docker network to attach to. |
 | `config_directory` | `string` | — | Host path to mount as `~/.claude`. |
-| `extra_volumes` | `map(object)` | `{}` | Extra volumes to mount. |
+| `extra_volumes` | `map(object)` | `{}` | Extra volumes to mount: `container_path`, `host_path`, `volume_name`, `from_container`, `read_only`. |
 | `api_key` | `string` | `""` | Anthropic API key (sensitive). Leave empty to use OAuth login. |
 | `model` | `string` | `"claude-sonnet-4-6"` | Claude model to use. |
 | `auto_update` | `bool` | `false` | Enable Claude Code auto-updates. |
@@ -203,6 +203,19 @@ ownership on the host. Your Docker image must include fixuid for this to work.
 
 * Terraform >= 1.17
 * [kreuzwerker/docker](https://github.com/kreuzwerker/terraform-provider-docker) >= 4.7.0
+
+
+## Tests
+
+```bash
+terraform init -backend=false
+terraform test
+```
+
+The tests plan the module with mocked Docker and local providers (Terraform >= 1.17, the module's
+own floor), without running the directory provisioner; they cover neither the image nor fixuid. They
+run on every push, in the GitHub workflow (with the newest providers and with their minimums) and in
+the GitLab pipeline.
 
 
 ## References

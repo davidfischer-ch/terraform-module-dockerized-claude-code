@@ -18,8 +18,8 @@ resource "docker_container" "app" {
   dynamic "capabilities" {
     for_each = length(var.cap_add) + length(var.cap_drop) > 0 ? [1] : []
     content {
-      add  = [for cap in var.cap_add : "CAP_${cap}"]
-      drop = [for cap in var.cap_drop : "CAP_${cap}"]
+      add  = local.cap_add
+      drop = local.cap_drop
     }
   }
 
@@ -71,8 +71,10 @@ resource "docker_container" "app" {
     for_each = var.extra_volumes
     content {
       container_path = volumes.value.container_path
+      from_container = volumes.value.from_container
       host_path      = volumes.value.host_path
       read_only      = volumes.value.read_only
+      volume_name    = volumes.value.volume_name
     }
   }
 
